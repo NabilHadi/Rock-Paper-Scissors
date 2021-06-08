@@ -1,36 +1,36 @@
-const choices = ['rock', 'paper', 'scissors'];
-const result_win = 'win';
-const result_lose = 'lose';
-const result_draw = 'draw';
+const GAME_CHOICES = ['rock', 'paper', 'scissors'];
+const RESULT_WIN_STR = 'win';
+const RESULT_LOSE_STR = 'lose';
+const RESULT_DRAW_STR = 'draw';
 
-function computerPlay() {
-  return choices[Math.floor(Math.random() * choices.length)];
+function getComputerPlay() {
+  return GAME_CHOICES[Math.floor(Math.random() * GAME_CHOICES.length)];
 }
 
 function playRound(playerSelction, computerSelction) {
   if (playerSelction === 'rock') {
     if (computerSelction === 'paper') {
-      return result_lose;
+      return RESULT_LOSE_STR;
     } else if (computerSelction === 'scissors') {
-      return result_win;
+      return RESULT_WIN_STR;
     } else {
-      return result_draw;
+      return RESULT_DRAW_STR;
     }
   } else if (playerSelction === 'paper') {
     if (computerSelction === 'scissors') {
-      return result_lose;
+      return RESULT_LOSE_STR;
     } else if (computerSelction === 'rock') {
-      return result_win;
+      return RESULT_WIN_STR;
     } else {
-      return result_draw;
+      return RESULT_DRAW_STR;
     }
   } else if (playerSelction === 'scissors') {
     if (computerSelction === 'rock') {
-      return result_lose;
+      return RESULT_LOSE_STR;
     } else if (computerSelction === 'paper') {
-      return result_win;
+      return RESULT_WIN_STR;
     } else {
-      return result_draw;
+      return RESULT_DRAW_STR;
     }
   } else {
     console.log("Error: Player selction was not rock, paper or scissors.");
@@ -38,8 +38,8 @@ function playRound(playerSelction, computerSelction) {
   }
 }
 
-function isCorrectChoice(choice) {
-  for (const str of choices) {
+function isValidGameChoice(choice) {
+  for (const str of GAME_CHOICES) {
     if (choice === str) {
       return true;
     }
@@ -47,29 +47,32 @@ function isCorrectChoice(choice) {
   return false;
 }
 
-function getCorrectInput() {
-  let input = prompt('Pick: Rock, Paper, Scissors', 'rock').toLowerCase();
-  while(!isCorrectChoice(input)) {
+function getValidInputFromUser() {
+  let userInput = prompt('Pick: Rock, Paper, Scissors', 'rock');
+  // convert userinput to lowercase for easily comparaple string
+  userInput = userInput.toLowerCase();
+  while(!isValidGameChoice(userInput)) {
     alert("Incorrect input, try again");
-    input = prompt('Pick: Rock, Paper, Scissors. Default is Rock.', 'rock').toLowerCase();
+    userInput = prompt('Pick: Rock, Paper, Scissors. Default is Rock.', 'rock');
+    userInput = userInput.toLowerCase();
   }
-  return input;
+  return userInput;
 }
 
 function game() {
   let playerScore = 0;
   let computerScore = 0;
   for (let i = 0; i < 5; i++) {
-    let playerSelction = getCorrectInput();
-    let computerSelction = computerPlay();
+    let playerSelction = getValidInputFromUser();
+    let computerSelction = getComputerPlay();
     console.log(`Computer picked ${computerSelction.toUpperCase()}.`)
     let result = playRound(playerSelction, computerSelction);
-    if (result === result_draw) {
+    if (result === RESULT_DRAW_STR) {
       console.log(`It is a ${result.toUpperCase()}!.`);
-    } else if (result === result_win) {
+    } else if (result === RESULT_WIN_STR) {
       console.log(`You ${result.toUpperCase()}!, ${playerSelction.toUpperCase()} beats ${computerSelction.toUpperCase()}.`);
       playerScore++;
-    } else if (result === result_lose) {
+    } else if (result === RESULT_LOSE_STR) {
       console.log(`You ${result.toUpperCase()}!, ${computerSelction.toUpperCase()} beats ${playerSelction.toUpperCase()}.`);
       computerScore++;
     } else {
