@@ -1,25 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <title>Rock Paper Scissors</title>
-</head>
-<body>
-  <main>
-    <div id="computer-choice"></div>
-    <div id="player-choice"></div>
-    <div id="choose-menu">
-      <h3>Choose an option!</h3>
-      <ul>
-        <li class="btn">Rock</li>
-        <li class="btn">Paper</li>
-        <li class="btn">Scissors</li>
-      </ul>
-    </div>
-  </main>
-  <script src="/script.js"></script>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="style.css" />
+		<title>Rock Paper Scissors</title>
+	</head>
+	<body>
+		<main>
+			<div id="score-container">
+				<div class="score-container-child">
+					<div id="player-choice-display">👊📜✂️</div>
+					<div id="player-score-display">0</div>
+				</div>
+				<div class="score-container-child">
+					<div id="computer-choice-display">👊📜✂️</div>
+					<div id="computer-score-display">0</div>
+				</div>
+			</div>
+			<div id="choose-menu">
+				<h3>Choose an option!</h3>
+				<ul>
+					<li id="rockBtn" class="btn">Rock</li>
+					<li id="paperBtn" class="btn">Paper</li>
+					<li id="scissorsBtn" class="btn">Scissors</li>
+				</ul>
+				<div id="resetBtn" class="btn">Reset</div>
+			</div>
+		</main>
+		<script src="/script.js"></script>
+	</body>
 </html>

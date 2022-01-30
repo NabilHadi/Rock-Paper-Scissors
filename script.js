@@ -1,124 +1,120 @@
-const GAME_CHOICES = ['rock', 'paper', 'scissors'];
-const RESULT_WIN_STR = 'win';
-const RESULT_LOSE_STR = 'lose';
-const RESULT_DRAW_STR = 'draw';
+const gameChoices = new Map();
+gameChoices.set("rock", "👊");
+gameChoices.set("paper", "📜");
+gameChoices.set("scissors", "✂️");
+const winString = 'win';
+const loseString = 'lose';
+const drawString = 'draw';
 
 function getComputerPlay() {
-  return GAME_CHOICES[Math.floor(Math.random() * GAME_CHOICES.length)];
+  const randChoice = Math.floor(Math.random() * 3);
+  if (randChoice === 0) return gameChoices.get("rock");
+  else if (randChoice === 1) return gameChoices.get("paper");
+  else return gameChoices.get("scissors");
 }
 
-function playRound(playerSelction, computerSelction) {
-  if (playerSelction === 'rock') {
-    if (computerSelction === 'paper') {
-      return RESULT_LOSE_STR;
-    } else if (computerSelction === 'scissors') {
-      return RESULT_WIN_STR;
+function playRound(player, computer, playerSelction, computerSelction) {
+  if (playerSelction === '👊') {
+    if (computerSelction === '📜') {
+      computer.score++;
+      return loseString;
+    } else if (computerSelction === '✂️') {
+      player.score++;
+      return winString;
     } else {
-      return RESULT_DRAW_STR;
+      return drawString;
     }
-  } else if (playerSelction === 'paper') {
-    if (computerSelction === 'scissors') {
-      return RESULT_LOSE_STR;
-    } else if (computerSelction === 'rock') {
-      return RESULT_WIN_STR;
+  } else if (playerSelction === '📜') {
+    if (computerSelction === '✂️') {
+      computer.score++;
+      return loseString;
+    } else if (computerSelction === '👊') {
+      player.score++;
+      return winString;
     } else {
-      return RESULT_DRAW_STR;
+      return drawString;
     }
-  } else if (playerSelction === 'scissors') {
-    if (computerSelction === 'rock') {
-      return RESULT_LOSE_STR;
-    } else if (computerSelction === 'paper') {
-      return RESULT_WIN_STR;
+  } else if (playerSelction === '✂️') {
+    if (computerSelction === '👊') {
+      computer.score++;
+      return loseString;
+    } else if (computerSelction === '📜') {
+      player.score++;
+      return winString;
     } else {
-      return RESULT_DRAW_STR;
+      return drawString;
     }
   } else {
-    console.log("Error: Player selction was not rock, paper or scissors.");
+    console.log("Error: Player selction was not 👊, 📜 or ✂️.");
     return 'error';
   }
 }
 
-function isValidGameChoice(choice) {
-  for (const str of GAME_CHOICES) {
-    if (choice === str) {
-      return true;
-    }
-  }
-  return false;
+function updateScores(player, computer) {
+  player.scoreText.textContent = player.score;
+  computer.scoreText.textContent = computer.score;
 }
 
-function getValidInputFromUser() {
-  let userInput = prompt('Pick: Rock, Paper, Scissors', 'rock');
-  // convert userinput to lowercase for easily comparaple string
-  userInput = userInput.toLowerCase();
-  while(!isValidGameChoice(userInput)) {
-    alert("Incorrect input, try again");
-    userInput = prompt('Pick: Rock, Paper, Scissors. Default is Rock.', 'rock');
-    userInput = userInput.toLowerCase();
-  }
-  return userInput;
+function displayChoices(player, computer, playerChoice) {
+  const computerChoice = getComputerPlay();
+  player.choiceDisplay.textContent = playerChoice;
+  computer.choiceDisplay.textContent = computerChoice;
+  playRound(player, computer, playerChoice, computerChoice);
+  updateScores(player, computer);
 }
 
-function game() {
-  let playerScore = 0;
-  let computerScore = 0;
-  for (let i = 0; i < 5; i++) {
-    let playerSelction = getValidInputFromUser();
-    let computerSelction = getComputerPlay();
-    console.log(`Computer picked ${computerSelction.toUpperCase()}.`)
-    let result = playRound(playerSelction, computerSelction);
-    if (result === RESULT_DRAW_STR) {
-      console.log(`It is a ${result.toUpperCase()}!.`);
-    } else if (result === RESULT_WIN_STR) {
-      console.log(`You ${result.toUpperCase()}!, ${playerSelction.toUpperCase()} beats ${computerSelction.toUpperCase()}.`);
-      playerScore++;
-    } else if (result === RESULT_LOSE_STR) {
-      console.log(`You ${result.toUpperCase()}!, ${computerSelction.toUpperCase()} beats ${playerSelction.toUpperCase()}.`);
-      computerScore++;
+function resetGame(player, computer) {
+  player.score = 0;
+  player.scoreText.textContent = 0;
+  player.choiceDisplay.textContent = "👊📜✂️";
+
+  computer.score = 0;
+  computer.scoreText.textContent = 0;
+  computer.choiceDisplay.textContent = "👊📜✂️";
+
+}
+
+function startGame() {
+  const rockBtn = document.querySelector("#rockBtn");
+  const paperBtn = document.querySelector("#paperBtn");
+  const scissorsBtn = document.querySelector("#scissorsBtn");
+  const resetBtn = document.querySelector("#resetBtn");
+
+  const player = {
+    score: 0,
+    scoreText: document.querySelector("#player-score-display"),
+    choiceDisplay: document.querySelector("#player-choice-display")
+  };
+
+  const computer = {
+    score: 0,
+    scoreText: document.querySelector("#computer-score-display"),
+    choiceDisplay: document.querySelector("#computer-choice-display")
+  };
+
+
+  rockBtn.addEventListener("click", onBtnClick);
+  paperBtn.addEventListener("click", onBtnClick);
+  scissorsBtn.addEventListener("click", onBtnClick);
+
+  function onBtnClick(event) {
+    if (event.target === rockBtn) {
+      console.log("👊");
+      displayChoices(player, computer, "👊");
+    } else if (event.target === paperBtn) {
+      console.log("📜");
+      displayChoices(player, computer, "📜");
+    } else if (event.target === scissorsBtn) {
+      console.log("✂️");
+      displayChoices(player, computer, "✂️");
     } else {
-      console.log('Error result was different than expected');
+      console.log("Unknown Button click Event");
     }
   }
-  console.log(`Computer score: ${computerScore}`);
-  console.log(`Your score: ${playerScore}`);
-  if (playerScore > computerScore) {
-    console.log('You are the winner!!.');
-  } else if (playerScore < computerScore) {
-    console.log('You lost this game!!.');
-  } else {
-    console.log('It is a draw.')
-  }
+
+  resetBtn.addEventListener("click", () => {
+    resetGame(player, computer);
+  });
 }
 
-game();
-
-
-// get player selection
-//  get input from player
-//  check if input is correct (matches one of the three choices)
-// get computer selection
-// compare player and computer selections
-//  if player selects rock then:
-//    if computer selects paper:
-//      player loses
-//    else if computer selects Scissors:
-//      player wins
-//    else:
-//      draw
-//  if player selects Paper then:
-//    if computer selects Scissors:
-//      player loses
-//    else if computer selects Rock:
-//      player wins
-//    else:
-//      draw
-// if player selects Scissors then:
-//    if computer selects Rock:
-//      player loses
-//    else if computer selects Paper:
-//      player wins
-//    else:
-//      draw
-// display winner
-//  get winner
-//  print winner to console with msg
+startGame();
